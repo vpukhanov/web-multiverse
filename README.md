@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌐 Web Multiverse
 
-## Getting Started
+Web Multiverse is a fantasy internet simulator that lets you explore alternate versions of the internet - both from different time periods and imaginary universes. Want to browse the internet as it might have existed in ancient Rome? Or perhaps explore what social media would look like in the Star Wars universe? Web Multiverse makes it possible!
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Universal Browser Interface**: A familiar browser-like experience with URL bar and navigation controls
+- **AI-Powered Content**: Every page is uniquely generated using LLMs
+- **Alternate History Browsing**: Explore how the internet might have looked in different historical periods
+- **Fantasy Web Exploration**: Visit websites from fictional universes and imaginary timelines
+- **Retro Web Experience**: Browse nostalgic web pages complete with vintage GIFs, marquees, and period-appropriate styling
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 How It Works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Enter any URL or search query in the browser bar
+2. Web Multiverse generates a unique webpage based on your input
+3. Experience web content that feels authentic to your chosen universe or time period
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Technical Details
 
-## Learn More
+Web Multiverse is built as a single-page application (SPA) featuring:
 
-To learn more about Next.js, take a look at the following resources:
+- A central browser window with authentic browser chrome
+- Fully functional URL bar and navigation controls
+- Dynamic content container that renders AI-generated HTML
+- Scrollable viewport for generated content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Design Philosophy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The project aims to recreate the authentic feel of browsing the web, while adding the magical ability to explore alternate versions of internet history. Whether you're feeling nostalgic for Web 1.0 or curious about how social networks might work in a cyberpunk future, Web Multiverse provides a window into these possibilities.
 
-## Deploy on Vercel
+## 🚧 Development Status
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is currently in development. Features and capabilities may change as the project evolves.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## 📝 License
+
+[License details to be added]
