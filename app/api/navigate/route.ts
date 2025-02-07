@@ -35,7 +35,7 @@ Your mission is to generate unique, richly detailed HTML pages based on a given 
 - IMMERSIVE LINKS: 3-5 internal links minimum, with hover-text via title attribute. Links should tell micro-stories (e.g., "Neighbor's Cat Blog (⚠️ password!)" → href="http://fluff.altnet/mr.whiskers"). All hrefs must be absolute.
 - ERA-APPROPRIATE STYLING: Combine inline styles + <font> tags. Use mismatched colors joyfully (yellow text on teal), animated borders, occasional <marquee> for alerts. Never use CSS flex/grid
 - SURPRISE ELEMENTS: Occasional <blink>, <table> layouts with borders. Add Easter eggs when appropriate
-- ONLY <BODY> TAG: Output only the contents that would appear within the body of an HTML document. Do not include the <html>, <head>, or <body> tags themselves. Do not include any commentary or markdown formatting, including blocks
+- ONLY <BODY> TAG: Output only the contents that would appear within the body of an HTML document. Do not include the <html>, <head>, or <body> tags themselves. Topmost element should be a div with a background color. Do not include any commentary or markdown formatting, including blocks.
 - NO EXTERNAL RESOURCES: Do not include any external resources like images, non-system fonts or other assets.
 
 When handling form submissions (URLs with query params):
