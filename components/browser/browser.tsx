@@ -1,7 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 
 import { manualContent } from "./manual";
 
@@ -11,12 +11,27 @@ export default function Browser() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    navigateTo(url);
+  };
 
-    if (url === "home.com") {
+  const navigateTo = (newUrl: string) => {
+    if (newUrl === "home.com") {
       setContent(manualContent);
     } else {
-      setContent(`<h1>You are viewing: ${url}</h1>
+      setContent(`<h1>You are viewing: ${newUrl}</h1>
                   <p>Content for this URL would be generated here.</p>`);
+    }
+    setUrl(newUrl);
+  };
+
+  const handleClick = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.tagName === "A") {
+      e.preventDefault();
+      const href = target.getAttribute("href");
+      if (href) {
+        navigateTo(href);
+      }
     }
   };
 
@@ -43,7 +58,10 @@ export default function Browser() {
 
       {/* Browser Content */}
       <div className="h-[600px] overflow-y-auto">
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+        <div
+          onClick={handleClick}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
     </div>
   );

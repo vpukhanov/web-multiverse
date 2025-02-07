@@ -25,7 +25,7 @@ export const manualContent = `
     </tr>
     <tr>
       <td style="text-align: left;">4. Return to this guide</td>
-      <td style="text-align: left;">Type 'manual' in the address bar to come back here</td>
+      <td style="text-align: left;">Type 'home.com' in the address bar to come back here</td>
     </tr>
   </table>
 
@@ -36,10 +36,10 @@ export const manualContent = `
 
   <h3 style="color: #00ff00;">Examples of Multiversal Destinations:</h3>
   <ul style="list-style-type: none; padding: 0;">
-    <li><a href="#" style="color: #ffff00;">ancient.rome</a> - Access the Roman Empire's intranet!</li>
-    <li><a href="#" style="color: #ffff00;">jedi.holonet</a> - Browse the Jedi Archives!</li>
-    <li><a href="#" style="color: #ffff00;">medieval.scroll</a> - Experience illuminated manuscripts online!</li>
-    <li><a href="#" style="color: #ffff00;">cyber.2077</a> - Surf the net of a dystopian future!</li>
+    <li><a href="ancient.rome" style="color: #ffff00;">ancient.rome</a> - Access the Roman Empire's intranet!</li>
+    <li><a href="jedi.holonet" style="color: #ffff00;">jedi.holonet</a> - Browse the Jedi Archives!</li>
+    <li><a href="medieval.scroll" style="color: #ffff00;">medieval.scroll</a> - Experience illuminated manuscripts online!</li>
+    <li><a href="cyber.2077" style="color: #ffff00;">cyber.2077</a> - Surf the net of a dystopian future!</li>
   </ul>
 
   <p style="margin-top: 20px;">
