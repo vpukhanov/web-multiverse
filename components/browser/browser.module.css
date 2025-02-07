@@ -1,0 +1,5 @@
+/* Base styles to make content readable and interactible */
+
+.content a {
+  text-decoration: underline;
+}

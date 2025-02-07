@@ -1,9 +1,10 @@
 "use client";
 
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, type MouseEvent } from "react";
+import { useState, MouseEvent, FormEvent } from "react";
 
 import Spinner from "../spinner";
+import styles from "./browser.module.css";
 import { manualContent } from "./manual";
 
 interface HistoryEntry {
@@ -34,6 +35,18 @@ export default function Browser() {
         navigateTo(href);
       }
     }
+  };
+
+  const handleFormSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const action = form.getAttribute("action") || "";
+
+    // @ts-expect-error URLSearchParam doesn't like FormData type
+    const searchParams = new URLSearchParams(formData).toString();
+    const fullUrl = `${action}${searchParams ? "?" + searchParams : ""}`;
+    navigateTo(fullUrl);
   };
 
   const navigateTo = async (newUrl: string) => {
@@ -125,7 +138,8 @@ export default function Browser() {
         ) : (
           <div
             onClick={handleClick}
-            className="flex min-h-full flex-col"
+            onSubmit={handleFormSubmit}
+            className={`flex min-h-full flex-col justify-center ${styles.content}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )}
