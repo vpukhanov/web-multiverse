@@ -1,7 +1,14 @@
 "use client";
 
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, MouseEvent, FormEvent } from "react";
+import {
+  useState,
+  MouseEvent,
+  FormEvent,
+  ChangeEvent,
+  useCallback,
+  memo,
+} from "react";
 
 import Spinner from "../spinner";
 import styles from "./browser.module.css";
@@ -21,58 +28,74 @@ export default function Browser() {
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigateTo(url);
-  };
+  const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  }, []);
 
-  const handleClick = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.tagName === "A") {
-      e.preventDefault();
-      const href = target.getAttribute("href");
-      if (href) {
-        navigateTo(href);
+  const navigateTo = useCallback(
+    async (newUrl: string) => {
+      setIsLoading(true);
+      let newContent: string;
+
+      setUrl(newUrl);
+
+      if (newUrl === "home.com") {
+        newContent = manualContent;
+      } else {
+        newContent = await imagineWebsite(newUrl);
       }
-    }
-  };
 
-  const handleFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const action = form.getAttribute("action") || "";
+      setContent(newContent);
 
-    // @ts-expect-error URLSearchParam doesn't like FormData type
-    const searchParams = new URLSearchParams(formData).toString();
-    const fullUrl = `${action}${searchParams ? "?" + searchParams : ""}`;
-    navigateTo(fullUrl);
-  };
+      // Update history
+      const newHistory = history.slice(0, currentHistoryIndex + 1);
+      newHistory.push({ url: newUrl, content: newContent });
+      setHistory(newHistory);
+      setCurrentHistoryIndex(newHistory.length - 1);
 
-  const navigateTo = async (newUrl: string) => {
-    setIsLoading(true);
-    let newContent: string;
+      setIsLoading(false);
+    },
+    [currentHistoryIndex, history],
+  );
 
-    setUrl(newUrl);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      navigateTo(url);
+    },
+    [navigateTo, url],
+  );
 
-    if (newUrl === "home.com") {
-      newContent = manualContent;
-    } else {
-      newContent = await imagineWebsite(newUrl);
-    }
+  const handleClick = useCallback(
+    (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "A") {
+        e.preventDefault();
+        const href = target.getAttribute("href");
+        if (href) {
+          navigateTo(href);
+        }
+      }
+    },
+    [navigateTo],
+  );
 
-    setContent(newContent);
+  const handleFormSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      const action = form.getAttribute("action") || "";
 
-    // Update history
-    const newHistory = history.slice(0, currentHistoryIndex + 1);
-    newHistory.push({ url: newUrl, content: newContent });
-    setHistory(newHistory);
-    setCurrentHistoryIndex(newHistory.length - 1);
+      // @ts-expect-error URLSearchParam doesn't like FormData type
+      const searchParams = new URLSearchParams(formData).toString();
+      const fullUrl = `${action}${searchParams ? "?" + searchParams : ""}`;
+      navigateTo(fullUrl);
+    },
+    [navigateTo],
+  );
 
-    setIsLoading(false);
-  };
-
-  const goBack = () => {
+  const goBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
       const newIndex = currentHistoryIndex - 1;
       setCurrentHistoryIndex(newIndex);
@@ -80,9 +103,9 @@ export default function Browser() {
       setUrl(prevUrl);
       setContent(prevContent);
     }
-  };
+  }, [currentHistoryIndex, history]);
 
-  const goForward = () => {
+  const goForward = useCallback(() => {
     if (currentHistoryIndex < history.length - 1) {
       const newIndex = currentHistoryIndex + 1;
       setCurrentHistoryIndex(newIndex);
@@ -90,7 +113,7 @@ export default function Browser() {
       setUrl(nextUrl);
       setContent(nextContent);
     }
-  };
+  }, [currentHistoryIndex, history]);
 
   return (
     <div className="w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
@@ -116,7 +139,7 @@ export default function Browser() {
           <input
             type="text"
             value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            onChange={handleUrlChange}
             className="flex-grow rounded-l-md px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Enter a URL or search query"
             disabled={isLoading}
@@ -136,17 +159,36 @@ export default function Browser() {
         {isLoading ? (
           <Spinner />
         ) : (
-          <div
+          <BrowserContent
+            content={content}
             onClick={handleClick}
             onSubmit={handleFormSubmit}
-            className={`flex min-h-full flex-col justify-center ${styles.content}`}
-            dangerouslySetInnerHTML={{ __html: content }}
           />
         )}
       </div>
     </div>
   );
 }
+
+// Memoize the content to prevent unnecessary re-renders when editing the URL
+const BrowserContent = memo(function BrowserContent({
+  content,
+  onClick,
+  onSubmit,
+}: {
+  content: string;
+  onClick: (e: MouseEvent) => void;
+  onSubmit: (e: FormEvent) => void;
+}) {
+  return (
+    <div
+      onClick={onClick}
+      onSubmit={onSubmit}
+      className={`flex min-h-full flex-col justify-center ${styles.content}`}
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
+  );
+});
 
 async function imagineWebsite(url: string) {
   const res = await fetch("/api/navigate", {
