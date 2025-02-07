@@ -1,4 +1,4 @@
-import Browser from "@/components/browser";
+import Browser from "@/components/browser/browser";
 
 export default function HomePage() {
   return (
