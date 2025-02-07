@@ -40,13 +40,14 @@ export default function Browser() {
     setIsLoading(true);
     let newContent: string;
 
+    setUrl(newUrl);
+
     if (newUrl === "home.com") {
       newContent = manualContent;
     } else {
       newContent = await imagineWebsite(newUrl);
     }
 
-    setUrl(newUrl);
     setContent(newContent);
 
     // Update history
@@ -124,6 +125,7 @@ export default function Browser() {
         ) : (
           <div
             onClick={handleClick}
+            className="flex min-h-full flex-col"
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )}
