@@ -4,7 +4,7 @@ export const manualContent = `
   <marquee behavior="alternate" scrollamount="10" style="font-size: 24px; color: #ff00ff;">
     <blink>🌈 Your Portal to Infinite Internets! 🚀</blink>
   </marquee>
-  <img src="/placeholder.svg?height=100&width=300" alt="Web Multiverse Logo">
+  
   <p style="font-size: 18px; color: #ffffff;">Greetings, Multiversal Surfer! You've stumbled upon the most radical invention since the creation of cyberspace itself!</p>
   
   <table border="2" cellpadding="5" cellspacing="0" align="center" style="margin-top: 20px; background-color: #0000ff; color: #ffffff;">
@@ -43,8 +43,6 @@ export const manualContent = `
   </ul>
 
   <p style="margin-top: 20px;">
-    <img src="/placeholder.svg?height=50&width=200" alt="Under Construction">
-    <br>
     <span style="color: #ff0000;">Warning: Some parts of the multiverse are still under construction!</span>
   </p>
   
