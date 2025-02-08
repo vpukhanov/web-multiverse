@@ -11,6 +11,8 @@ import {
   useEffect,
 } from "react";
 
+import { MAX_LIMIT } from "@/lib/constants";
+
 import Spinner from "../spinner";
 import Battery from "./battery";
 import styles from "./browser.module.css";
@@ -26,7 +28,10 @@ export default function Browser() {
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [universe, setUniverse] = useState(defaultUniverse);
-  const [rateLimit, setRateLimit] = useState({ remaining: 30, reset: 0 });
+  const [rateLimit, setRateLimit] = useState({
+    remaining: MAX_LIMIT,
+    reset: 0,
+  });
 
   const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
