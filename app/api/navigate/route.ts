@@ -14,13 +14,15 @@ export async function POST(request: Request) {
   const { url } = await request.json();
 
   const { text } = await generateText({
-    model: openrouter("openai/gpt-4o-mini"),
+    model: openrouter("google/gemini-2.0-flash-001"),
     temperature: 1.1,
     system,
     prompt: url,
   });
 
-  return Response.json({ html: text });
+  const html = text.replaceAll("```html", "").replaceAll("```", "");
+
+  return Response.json({ html });
 }
 
 const system = `
