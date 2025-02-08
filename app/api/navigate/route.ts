@@ -11,13 +11,17 @@ const openrouter = createOpenRouter({
 });
 
 export async function POST(request: Request) {
-  const { url } = await request.json();
+  const { url, universe } = await request.json();
 
   const { text } = await generateText({
     model: openrouter("google/gemini-2.0-flash-001"),
     temperature: 1.1,
-    system,
-    prompt: url,
+    messages: [
+      { role: "system", content: systemPreUniverse },
+      { role: "user", content: universe },
+      { role: "system", content: systemPostUniverse },
+      { role: "user", content: url },
+    ],
   });
 
   const html = text.replaceAll("```html", "").replaceAll("```", "");
@@ -25,7 +29,7 @@ export async function POST(request: Request) {
   return Response.json({ html });
 }
 
-const system = `
+const systemPreUniverse = `
 You are a creative, witty web server in an alternate reality—a world where websites are as varied and imaginative as the stories behind them. Your mission is to generate unique, richly detailed HTML pages based on a given URL and a provided world description. Each page should reflect its own theme, purpose, and personality, with a layout and content that feel distinct from every other website.
 
 Your mission is to generate unique, richly detailed HTML pages based on a given URL and a provided world description. Each page must feel like a completely distinct digital entity with:
@@ -46,13 +50,8 @@ When handling form submissions (URLs with query params):
 - For logins: Create fake error messages ("Password rejected by quantum firewall")
 - Never show generic success messages - always context-specific content
 
-World description:
-Imagine an alternate 1996 where every website is someone's passionate hobby:
-- Restaurant sites list daily specials in Comic Sans with chef's diary
-- Conspiracy sites use red Courier New with "TOP SECRET" watermarks  
-- University sites have animated construction signs under every page
-- All links feel hand-curated - no generic "Click here"
-- Colorful backgrounds that make sense for the content and the universe
+World description:`;
 
+const systemPostUniverse = `
 Now, when provided with a URL, output the resulting HTML that meets these guidelines and fully embodies the character and diversity of this web universe. Do not include any commentary—only output the HTML.
 `;

@@ -12,7 +12,8 @@ import {
 
 import Spinner from "../spinner";
 import styles from "./browser.module.css";
-import { manualContent } from "./manual";
+import { defaultUniverse, manualContent } from "./hardcoded";
+import Settings from "./settings";
 
 interface HistoryEntry {
   url: string;
@@ -27,6 +28,7 @@ export default function Browser() {
   ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [universe, setUniverse] = useState(defaultUniverse);
 
   const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
@@ -42,7 +44,7 @@ export default function Browser() {
       if (newUrl === "home.com") {
         newContent = manualContent;
       } else {
-        newContent = await imagineWebsite(newUrl);
+        newContent = await imagineWebsite(newUrl, universe);
       }
 
       setContent(newContent);
@@ -55,7 +57,7 @@ export default function Browser() {
 
       setIsLoading(false);
     },
-    [currentHistoryIndex, history],
+    [currentHistoryIndex, history, universe],
   );
 
   const handleSubmit = useCallback(
@@ -152,6 +154,13 @@ export default function Browser() {
             <Search size={20} />
           </button>
         </form>
+        <div className="ml-2">
+          <Settings
+            universe={universe}
+            onUniverseChange={setUniverse}
+            disabled={isLoading}
+          />
+        </div>
       </div>
 
       {/* Browser Content */}
@@ -190,10 +199,10 @@ const BrowserContent = memo(function BrowserContent({
   );
 });
 
-async function imagineWebsite(url: string) {
+async function imagineWebsite(url: string, universe: string) {
   const res = await fetch("/api/navigate", {
     method: "POST",
-    body: JSON.stringify({ url }),
+    body: JSON.stringify({ url, universe }),
   });
   const { html } = await res.json();
   return html;
