@@ -3,3 +3,18 @@
 .content a {
   text-decoration: underline;
 }
+
+.content > :only-child {
+  flex: 1;
+}
+
+.content button,
+.content input[type="submit"] {
+  background-color: #c0c0c0;
+  padding: 5px 5px;
+  border: solid 1px #000;
+  border-right-width: 3px;
+  border-bottom-width: 3px;
+  color: #000;
+  border-radius: 2px;
+}
