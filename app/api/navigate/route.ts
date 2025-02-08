@@ -1,4 +1,5 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { track } from "@vercel/analytics/server";
 import { generateText } from "ai";
 
 import { limitCall } from "@/lib/ratelimit";
@@ -23,7 +24,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const { text } = await generateText({
+  if (remaining === 0) {
+    track("Rate Limit Hit");
+  }
+
+  const { text, usage } = await generateText({
     model: openrouter("google/gemini-2.0-flash-001"),
     temperature: 1.1,
     messages: [
@@ -32,6 +37,11 @@ export async function POST(request: Request) {
       { role: "system", content: systemPostUniverse },
       { role: "user", content: url },
     ],
+  });
+
+  track("LLM Generation", {
+    promptTokens: usage.promptTokens,
+    completionTokens: usage.completionTokens,
   });
 
   const html = text.replaceAll("```html", "").replaceAll("```", "");

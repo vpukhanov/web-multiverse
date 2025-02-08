@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics/react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   useState,
@@ -39,11 +40,15 @@ export default function Browser() {
 
   const navigateTo = useCallback(
     async (newUrl: string) => {
-      setIsLoading(true);
-      let newContent: string;
+      track("Navigation", {
+        urlLength: newUrl.length,
+        universeLength: universe.length,
+      });
 
+      setIsLoading(true);
       setUrl(newUrl);
 
+      let newContent: string;
       if (newUrl === "home.com") {
         newContent = manualContent;
       } else {
@@ -106,6 +111,8 @@ export default function Browser() {
 
   const goBack = useCallback(() => {
     if (currentHistoryIndex > 0) {
+      track("Back Navigation");
+
       const newIndex = currentHistoryIndex - 1;
       setCurrentHistoryIndex(newIndex);
       const { url: prevUrl, content: prevContent } = history[newIndex];
@@ -116,6 +123,8 @@ export default function Browser() {
 
   const goForward = useCallback(() => {
     if (currentHistoryIndex < history.length - 1) {
+      track("Forward Navigation");
+
       const newIndex = currentHistoryIndex + 1;
       setCurrentHistoryIndex(newIndex);
       const { url: nextUrl, content: nextContent } = history[newIndex];
