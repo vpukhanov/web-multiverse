@@ -1,6 +1,12 @@
-import { BatteryFull } from "lucide-react";
+import {
+  BatteryFull,
+  BatteryIcon,
+  BatteryLowIcon,
+  BatteryMediumIcon,
+} from "lucide-react";
 
 import { MAX_LIMIT } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 import {
   Tooltip,
@@ -24,10 +30,13 @@ export default function Battery({ remaining, reset }: BatteryProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            className="flex flex-row gap-2 rounded p-1 px-1.5 hover:bg-gray-300"
+            className={cn(
+              "flex flex-row gap-2 rounded p-1 px-1.5 hover:bg-gray-300",
+              remaining === 0 && "bg-red-300 hover:bg-red-500",
+            )}
             aria-label="Remaining requests"
           >
-            <BatteryFull />
+            {getIcon(remaining)}
             <div className="font-semibold">{remaining}</div>
           </button>
         </TooltipTrigger>
@@ -41,4 +50,11 @@ export default function Battery({ remaining, reset }: BatteryProps) {
       </Tooltip>
     </TooltipProvider>
   );
+}
+
+function getIcon(remaining: number) {
+  if (remaining > (MAX_LIMIT / 3) * 2) return <BatteryFull />;
+  if (remaining > MAX_LIMIT / 3) return <BatteryMediumIcon />;
+  if (remaining > 0) return <BatteryLowIcon />;
+  return <BatteryIcon />;
 }
