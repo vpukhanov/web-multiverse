@@ -16,7 +16,7 @@ import { MAX_LIMIT } from "@/lib/constants";
 import Spinner from "../spinner";
 import Battery from "./battery";
 import styles from "./browser.module.css";
-import { defaultUniverse, manualContent } from "./hardcoded";
+import { defaultUniverse, manualContent, getErrorPage } from "./hardcoded";
 import Settings from "./settings";
 
 export default function Browser() {
@@ -49,7 +49,9 @@ export default function Browser() {
       } else {
         const { html, limit } = await imagineWebsite(newUrl, universe);
         newContent = html;
-        setRateLimit(limit);
+        if (limit) {
+          setRateLimit(limit);
+        }
       }
 
       setContent(newContent);
@@ -216,10 +218,47 @@ const BrowserContent = memo(function BrowserContent({
   );
 });
 
-async function imagineWebsite(url: string, universe: string) {
-  const res = await fetch("/api/navigate", {
-    method: "POST",
-    body: JSON.stringify({ url, universe }),
-  });
-  return res.json();
+async function imagineWebsite(
+  url: string,
+  universe: string,
+): Promise<{
+  html: string;
+  limit?: { remaining: number; reset: number };
+}> {
+  try {
+    const res = await fetch("/api/navigate", {
+      method: "POST",
+      body: JSON.stringify({ url, universe }),
+    });
+
+    if (!res.ok) {
+      if (res.status === 429) {
+        const { limit } = await res.json();
+        return {
+          html: getErrorPage(
+            "Rate Limit Exceeded",
+            "You've reached the maximum number of multiversal jumps!\nPlease wait before attempting another journey.",
+          ),
+          limit,
+        };
+      }
+
+      return {
+        html: getErrorPage(
+          "Failed to Access Alternate Universe",
+          "Unknown error occured",
+        ),
+      };
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error imagining website:", error);
+    return {
+      html: getErrorPage(
+        "Multiversal Connection Lost",
+        `A temporal anomaly has disrupted your connection to the multiverse.\nPlease try again later.`,
+      ),
+    };
+  }
 }
