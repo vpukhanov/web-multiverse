@@ -27,7 +27,7 @@ export default function Battery({ remaining, reset }: BatteryProps) {
 
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <button
             className={cn(
@@ -40,9 +40,9 @@ export default function Battery({ remaining, reset }: BatteryProps) {
             <div className="font-semibold">{remaining}</div>
           </button>
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent side="bottom">
           {remaining < MAX_LIMIT ? (
-            <p>Request limit will reset {resetRelative}</p>
+            <p>More requests available {resetRelative}</p>
           ) : (
             <p>You can make {MAX_LIMIT} requests in 24 hours</p>
           )}
