@@ -7,11 +7,10 @@ import { navigationSchema } from "@/lib/schemas";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
-  // TODO: Set correct headers on public deployment
-  // headers: {
-  //   "HTTP-Referer": "https://dvrst.io",
-  //   "X-Title": "Diversequality",
-  // },
+  headers: {
+    "HTTP-Referer": "https://multiverse.pukhanov.ru",
+    "X-Title": "Web Multiverse",
+  },
 });
 
 export async function POST(request: Request) {
