@@ -8,27 +8,25 @@ import {
   ChangeEvent,
   useCallback,
   memo,
+  useEffect,
 } from "react";
 
 import Spinner from "../spinner";
+import Battery from "./battery";
 import styles from "./browser.module.css";
 import { defaultUniverse, manualContent } from "./hardcoded";
 import Settings from "./settings";
 
-interface HistoryEntry {
-  url: string;
-  content: string;
-}
-
 export default function Browser() {
   const [url, setUrl] = useState("home.com");
   const [content, setContent] = useState(manualContent);
-  const [history, setHistory] = useState<HistoryEntry[]>([
+  const [history, setHistory] = useState([
     { url: "home.com", content: manualContent },
   ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [universe, setUniverse] = useState(defaultUniverse);
+  const [rateLimit, setRateLimit] = useState({ remaining: 30, reset: 0 });
 
   const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
@@ -117,6 +115,15 @@ export default function Browser() {
     }
   }, [currentHistoryIndex, history]);
 
+  useEffect(() => {
+    const fetchRateLimit = async () => {
+      const res = await fetch("/api/limit");
+      const { remaining, reset } = await res.json();
+      setRateLimit({ remaining, reset });
+    };
+    fetchRateLimit();
+  }, []);
+
   return (
     <div className="w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
       {/* Browser Chrome */}
@@ -154,6 +161,9 @@ export default function Browser() {
             <Search size={20} />
           </button>
         </form>
+        <div className="ml-2">
+          <Battery {...rateLimit} />
+        </div>
         <div className="ml-2">
           <Settings
             universe={universe}
