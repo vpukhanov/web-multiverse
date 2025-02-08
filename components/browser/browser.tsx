@@ -47,7 +47,9 @@ export default function Browser() {
       if (newUrl === "home.com") {
         newContent = manualContent;
       } else {
-        newContent = await imagineWebsite(newUrl, universe);
+        const { html, limit } = await imagineWebsite(newUrl, universe);
+        newContent = html;
+        setRateLimit(limit);
       }
 
       setContent(newContent);
@@ -219,6 +221,5 @@ async function imagineWebsite(url: string, universe: string) {
     method: "POST",
     body: JSON.stringify({ url, universe }),
   });
-  const { html } = await res.json();
-  return html;
+  return res.json();
 }

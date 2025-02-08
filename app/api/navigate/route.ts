@@ -1,6 +1,8 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateText } from "ai";
 
+import { limitCall } from "@/lib/ratelimit";
+
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
   // TODO: Set correct headers on public deployment
@@ -12,6 +14,14 @@ const openrouter = createOpenRouter({
 
 export async function POST(request: Request) {
   const { url, universe } = await request.json();
+
+  const { success, remaining, reset } = await limitCall();
+  if (!success) {
+    return Response.json(
+      { error: "Rate limit exceeded", limit: { remaining, reset } },
+      { status: 429 },
+    );
+  }
 
   const { text } = await generateText({
     model: openrouter("google/gemini-2.0-flash-001"),
@@ -26,7 +36,7 @@ export async function POST(request: Request) {
 
   const html = text.replaceAll("```html", "").replaceAll("```", "");
 
-  return Response.json({ html });
+  return Response.json({ html, limit: { remaining, reset } });
 }
 
 const systemPreUniverse = `

@@ -13,10 +13,14 @@ const ratelimit = new Ratelimit({
 });
 
 export async function getLimit() {
-  const id = getIdentifier((await headers()).get("x-forwarded-for"));
-  return ratelimit.getRemaining(id);
+  return ratelimit.getRemaining(await getIdentifier());
 }
 
-function getIdentifier(ip: string | null) {
+export async function limitCall() {
+  return ratelimit.limit(await getIdentifier());
+}
+
+async function getIdentifier() {
+  const ip = (await headers()).get("x-forwarded-for");
   return `web-multiverse:${ip}`;
 }
