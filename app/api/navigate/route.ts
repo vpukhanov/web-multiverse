@@ -3,6 +3,7 @@ import { track } from "@vercel/analytics/server";
 import { generateText } from "ai";
 
 import { limitCall } from "@/lib/ratelimit";
+import { navigationSchema } from "@/lib/schemas";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -14,7 +15,10 @@ const openrouter = createOpenRouter({
 });
 
 export async function POST(request: Request) {
-  const { url, universe } = await request.json();
+  const validatedFields = navigationSchema.safeParse(await request.json());
+  if (!validatedFields.success) {
+    return Response.json({ error: "Invalid request" }, { status: 400 });
+  }
 
   const { success, remaining, reset } = await limitCall();
   if (!success) {
@@ -28,6 +32,7 @@ export async function POST(request: Request) {
     track("Rate Limit Hit");
   }
 
+  const { url, universe } = validatedFields.data;
   const { text, usage } = await generateText({
     model: openrouter("google/gemini-2.0-flash-001"),
     temperature: 1.1,

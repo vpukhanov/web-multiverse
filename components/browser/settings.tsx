@@ -49,6 +49,7 @@ export default function Settings({
             value={universe}
             onChange={(e) => onUniverseChange(e.target.value)}
             placeholder="Describe the universe context for the LLM..."
+            maxLength={2000}
             className="h-32 w-full rounded-md border p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

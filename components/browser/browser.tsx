@@ -169,6 +169,7 @@ export default function Browser() {
             onChange={handleUrlChange}
             className="flex-grow rounded-l-md px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Enter a URL or search query"
+            maxLength={1000}
             disabled={isLoading}
           />
           <button
