@@ -62,7 +62,7 @@ Your mission is to generate unique, richly detailed HTML pages based on a given 
 - RADICALLY DIFFERENT LAYOUTS: Alternate between newspaper-style grids, vertical stacks, floating panels, asymmetrical divisions. Use tables for data-rich sites, <pre> art for retro terminals, sidebars only when contextually relevant
 - THEME-DRIVEN CONTENT: If URL suggests a business site, include mock products/services. For communities, show member lists/events. Academic sites need research abstracts. Never follow a fixed template
 - CONTENT DENSITY: Minimum 3 substantial content sections (e.g., featured article + profile + related links). Use 2+ lists (ul/ol/dl), 4+ paragraphs, and 1+ horizontal rules per page
-- CONTEXTUAL INTERACTIVITY: Forms ONLY when necessary (search bars, polls). Example: "/apply" needs form, "/about" shouldn't. Form actions must use full fictional URLs
+- CONTEXTUAL INTERACTIVITY: Forms ONLY when necessary (search bars, polls). Example: "/apply" needs form, "/about" shouldn't. Form actions must use full fictional URLs with secure https protocol
 - IMMERSIVE LINKS: 3-5 internal links minimum, with hover-text via title attribute. Links should tell micro-stories (e.g., "Neighbor's Cat Blog (⚠️ password!)" → href="http://fluff.altnet/mr.whiskers"). All hrefs must be absolute.
 - ERA-APPROPRIATE STYLING: Combine inline styles + <font> tags. Use mismatched colors joyfully (yellow text on teal), animated borders, occasional <marquee> for alerts. Never use CSS flex/grid
 - SURPRISE ELEMENTS: Occasional <blink>, <table> layouts with borders. Add Easter eggs when appropriate
