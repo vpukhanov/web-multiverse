@@ -10,6 +10,7 @@ import {
   useCallback,
   memo,
   useEffect,
+  useRef,
 } from "react";
 
 import { MAX_LIMIT } from "@/lib/constants";
@@ -218,10 +219,36 @@ const BrowserContent = memo(function BrowserContent({
   onClick: (e: MouseEvent) => void;
   onSubmit: (e: FormEvent) => void;
 }) {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  // Using effects, because native React's onClick and onSubmit handling
+  // can break if the content is not 100% valid HTML. This ref approach seems
+  // to be more robust.
+  useEffect(() => {
+    const handleClick = (e: globalThis.MouseEvent) => {
+      if (contentRef.current?.contains(e.target as Node)) {
+        onClick(e as unknown as MouseEvent);
+      }
+    };
+
+    const handleSubmit = (e: globalThis.SubmitEvent) => {
+      if (contentRef.current?.contains(e.target as Node)) {
+        onSubmit(e as unknown as FormEvent);
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    document.addEventListener("submit", handleSubmit);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("submit", handleSubmit);
+    };
+  }, [onClick, onSubmit]);
+
   return (
     <div
-      onClick={onClick}
-      onSubmit={onSubmit}
+      ref={contentRef}
       className={`flex min-h-full flex-col justify-center ${styles.content}`}
       dangerouslySetInnerHTML={{ __html: content }}
     />
