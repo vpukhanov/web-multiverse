@@ -13,15 +13,17 @@ import {
   useRef,
 } from "react";
 
-import { MAX_LIMIT } from "@/lib/constants";
-
 import Spinner from "../spinner";
 import Battery from "./battery";
 import styles from "./browser.module.css";
 import { defaultUniverse, manualContent, getErrorPage } from "./hardcoded";
 import Settings from "./settings";
 
-export default function Browser() {
+type Props = {
+  initialLimit: { remaining: number; reset: number };
+};
+
+export default function Browser({ initialLimit }: Props) {
   const [url, setUrl] = useState("home.com");
   const [content, setContent] = useState(manualContent);
   const [history, setHistory] = useState([
@@ -30,10 +32,7 @@ export default function Browser() {
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [universe, setUniverse] = useState(defaultUniverse);
-  const [rateLimit, setRateLimit] = useState({
-    remaining: MAX_LIMIT,
-    reset: 0,
-  });
+  const [rateLimit, setRateLimit] = useState(initialLimit);
 
   const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setUrl(e.target.value);
@@ -133,15 +132,6 @@ export default function Browser() {
       setContent(nextContent);
     }
   }, [currentHistoryIndex, history]);
-
-  useEffect(() => {
-    const fetchRateLimit = async () => {
-      const res = await fetch("/api/limit");
-      const { remaining, reset } = await res.json();
-      setRateLimit({ remaining, reset });
-    };
-    fetchRateLimit();
-  }, []);
 
   return (
     <div className="w-full max-w-4xl overflow-hidden rounded-lg bg-white shadow-lg">
@@ -260,7 +250,7 @@ async function imagineWebsite(
   universe: string,
 ): Promise<{
   html: string;
-  limit?: { remaining: number; reset: number };
+  limit?: Props["initialLimit"];
 }> {
   try {
     const res = await fetch("/api/navigate", {
