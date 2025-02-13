@@ -14,11 +14,12 @@ import {
 } from "react";
 
 import navigateDefaultUniverse from "@/lib/prompts/navigate-default-universe.md";
+import errorTemplate from "@/lib/sites/error.md";
+import homeComSite from "@/lib/sites/home.com.md";
 
 import Spinner from "../spinner";
 import Battery from "./battery";
 import styles from "./browser.module.css";
-import { manualContent, getErrorPage } from "./hardcoded";
 import Settings from "./settings";
 
 type Props = {
@@ -26,10 +27,10 @@ type Props = {
 };
 
 export default function Browser({ initialLimit }: Props) {
-  const [url, setUrl] = useState("home.com");
-  const [content, setContent] = useState(manualContent);
+  const [url, setUrl] = useState("https://home.com");
+  const [content, setContent] = useState(homeComSite);
   const [history, setHistory] = useState([
-    { url: "home.com", content: manualContent },
+    { url: "https://home.com", content: homeComSite },
   ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,8 +52,8 @@ export default function Browser({ initialLimit }: Props) {
       setUrl(newUrl);
 
       let newContent: string;
-      if (newUrl === "home.com") {
-        newContent = manualContent;
+      if (newUrl === "https://home.com") {
+        newContent = homeComSite;
       } else {
         const { html, limit } = await imagineWebsite(newUrl, universe);
         newContent = html;
@@ -290,4 +291,8 @@ async function imagineWebsite(
       ),
     };
   }
+}
+
+function getErrorPage(error: string, details: string) {
+  return errorTemplate.replace("{error}", error).replace("{details}", details);
 }
