@@ -13,10 +13,12 @@ import {
   useRef,
 } from "react";
 
+import navigateDefaultUniverse from "@/lib/prompts/navigate-default-universe.md";
+
 import Spinner from "../spinner";
 import Battery from "./battery";
 import styles from "./browser.module.css";
-import { defaultUniverse, manualContent, getErrorPage } from "./hardcoded";
+import { manualContent, getErrorPage } from "./hardcoded";
 import Settings from "./settings";
 
 type Props = {
@@ -31,7 +33,7 @@ export default function Browser({ initialLimit }: Props) {
   ]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [universe, setUniverse] = useState(defaultUniverse);
+  const [universe, setUniverse] = useState(navigateDefaultUniverse);
   const [rateLimit, setRateLimit] = useState(initialLimit);
 
   const handleUrlChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
