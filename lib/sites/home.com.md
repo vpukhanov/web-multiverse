@@ -4,7 +4,7 @@
     <blink>🌈 Your Portal to Infinite Internets! 🚀</blink>
   </marquee>
   <p style="font-size: 18px; color: #ffffff;">Greetings, Multiversal Surfer! You've stumbled upon the most radical invention since the creation of cyberspace itself!</p>
-  <table border="2" cellpadding="5" cellspacing="0" align="center" style="margin-top: 20px; background-color: #0000ff; color: #ffffff;">
+  <table border="2" cellpadding="5" cellspacing="0" align="center" style="margin: 20px auto; background-color: #0000ff; color: #ffffff;">
     <tr>
       <th colspan="2" style="font-size: 24px; color: #ffff00;">How to Operate This Cosmic Browser</th>
     </tr>
