@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 
   const { url, universe } = validatedFields.data;
   const { text, usage } = await generateText({
-    model: openrouter("google/gemini-2.0-flash-001"),
+    model: openrouter("google/gemini-2.5-flash-lite"),
     temperature: 1.1,
     messages: [
       { role: "system", content: navigatePreUniverse },
@@ -46,8 +46,8 @@ export async function POST(request: Request) {
   });
 
   track("LLM Generation", {
-    promptTokens: usage.promptTokens,
-    completionTokens: usage.completionTokens,
+    promptTokens: usage.inputTokens ?? "unknown",
+    completionTokens: usage.outputTokens ?? "unknown",
   });
 
   const html = text.replaceAll("```html", "").replaceAll("```", "");

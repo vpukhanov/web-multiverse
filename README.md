@@ -16,7 +16,7 @@ Web pages are generated with LLM based just on the URL and a universe descriptio
 
 - [Next.js](https://nextjs.org/) with App Router
 - [Vercel AI SDK](https://sdk.vercel.ai/) for streaming responses
-- [OpenRouter](https://openrouter.ai/) as AI provider (Gemini 2.0 Flash)
+- [OpenRouter](https://openrouter.ai/) as AI provider (Gemini 2.5 Flash Lite)
 - [Upstash](https://upstash.com/) Redis for rate limiting
 
 ## Setup
