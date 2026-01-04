@@ -4,8 +4,6 @@ A fantasy web browser that generates AI-created webpages for an imaginary univer
 
 Web pages are generated with LLM based just on the URL and a universe description. You can follow the links to go deeper into the rabbit hole, as well as submit some forms and see where it brings you.
 
-[Try on multiverse.pukhanov.ru](https://multiverse.pukhanov.ru)
-
 ## Screenshots
 
 ![Screenshot 1](./screenshots/screenshot-1.png)
